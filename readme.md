@@ -7,7 +7,7 @@
 Create a new _Keyboard_ instance:
 
 ```js
-var kb = new Keyboard(element);
+var kb = new Keyboard(element)
 ```
 
 For detecting <em style="color:lightblue">keydown</em> and <em style="color:lightblue">keyup</em> events, <em style="color:lightblue">element</em> is the element you want to detect an event on, this defaults to `document`. This can be changed via `Keyboard.element`
@@ -16,7 +16,7 @@ For detecting <em style="color:lightblue">keydown</em> and <em style="color:ligh
 
 ```js
 var kb = new Keyboard(document.querySelector("#element"));
-kb.keydown("a", () => console.log("a"));
+kb.keydown("a", () => console.log("a"))
 ```
 
 The <em style="color:lightblue">keydown</em> and <em style="color:lightblue">keyup</em> methods take in a key to listen for and a callback to execute once the key is pressed.
