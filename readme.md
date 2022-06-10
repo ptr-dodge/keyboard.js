@@ -93,3 +93,4 @@ if (typeof arguments[2] == "function") {
 
 ## <a id="release">_release()_</a>
 
+Same things apply to this method.

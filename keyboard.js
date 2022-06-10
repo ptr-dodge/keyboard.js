@@ -3,7 +3,8 @@ class Keyboard {
         this.element = element ? element : document
         this.key = ""
     }
-
+    // deciding on wether or not to use this
+/*
     on(key, type, callback) {
         type = type ? type : "keydown" || "keyup"
         this.key = key
@@ -46,9 +47,8 @@ class Keyboard {
             return callback()
         } else return console.error("please provide a function as a callback")
     }
+*/
 
-    // deciding on wether or not to use this
-    /*
     keydown(key, callback,) {
         this.key = key
         key = key ? key : "" || []
@@ -130,5 +130,4 @@ class Keyboard {
             return callback()
         } else return console.error("please provide a function as a callback")
     }
-    */
 }
