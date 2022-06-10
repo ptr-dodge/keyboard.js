@@ -71,23 +71,23 @@ The second argument is for modifiers; `ctrl`, `alt`, `shift`
 these must be specified like so in an array:
 
 ```js
-kb.keydown("a", ["ctrl", "..."]);
+kb.keydown("a", ["ctrl", "..."])
 ```
 
 If no modifiers are specified, the second argument defaults to the callback with this nifty bit:
 
 ```js
 if (typeof arguments[1] == "array") {
-  modifiers = arguments[1];
+  modifiers = arguments[1]
 }
 if (typeof arguments[1] == "function") {
-  callback = arguments[1];
+  callback = arguments[1]
 }
 if (typeof arguments[2] == "array") {
-  modifiers = arguments[2];
+  modifiers = arguments[2]
 }
 if (typeof arguments[2] == "function") {
-  callback = arguments[2];
+  callback = arguments[2]
 }
 ```
 
