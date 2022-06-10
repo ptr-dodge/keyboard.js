@@ -15,7 +15,7 @@ For detecting <em style="color:lightblue">keydown</em> and <em style="color:ligh
 ### Example:
 
 ```js
-var kb = new Keyboard(document.querySelector("#element"));
+var kb = new Keyboard(document.querySelector("#element"))
 kb.keydown("a", () => console.log("a"))
 ```
 
