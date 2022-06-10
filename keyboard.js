@@ -47,6 +47,7 @@ class Keyboard {
         } else return console.error("please provide a function as a callback")
     }
 
+    // deciding on wether or not to use this
     /*
     keydown(key, callback,) {
         this.key = key
