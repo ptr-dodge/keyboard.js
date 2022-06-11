@@ -1,6 +1,6 @@
 # Keyboard.js
 
-### <em style="color:lightblue">Simulate and detect keypresses with my library</em>
+>### <em style="color:lightblue">Simulate and detect keypresses with my library</em>
 
 ---
 
@@ -49,7 +49,7 @@ kb.keydown("a", () => console.log("a"))✔️
 // works
 ```
 
-This works too, more conventional method.
+> This works too, more conventional method.
 
 ```js
 kb.keydown("a", callback)✔️
