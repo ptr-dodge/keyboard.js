@@ -31,8 +31,7 @@ Else you will get an error: `please provide a function as a callback` or the arg
 
 ## <a id="keyup">_keyup()_</a>
 
-The same rules _(modifiers)_ apply to this method as well. Only difference is that it detects _keyup_ events.
-Also nullable
+The same rules _(modifiers)_ apply to this method as well. Only difference is that it detects _keyup_ events. both methods are nullable
 
 ### Bad example
 
@@ -71,7 +70,7 @@ The second argument is for modifiers; `ctrl`, `alt`, `shift`
 these must be specified like so in an array:
 
 ```js
-kb.keydown("a", ["ctrl", "..."])
+kb.press("a", ["ctrl", "..."])
 ```
 
 If no modifiers are specified, the second argument defaults to the callback with this nifty bit:
@@ -92,5 +91,17 @@ if (typeof arguments[2] == "function") {
 ```
 
 ## <a id="release">_release()_</a>
+Same as <a id="press">_press()_</a>
 
-Same things apply to this method.
+---
+## <a id="keymap">_keymap()_</a>
+Maps an array of keys to an array of callbacks:
+
+```js
+kb.keymap(["a", "d", "w", "s"], [left, right, up, down])
+
+var left = () => console.log("left")
+var right = () => console.log("right")
+var up = () => console.log("up")
+var down = () => console.log("down")
+```
