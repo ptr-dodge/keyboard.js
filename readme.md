@@ -98,7 +98,7 @@ Same as <a id="press">_press()_</a>
 Maps an array of keys to an array of callbacks:
 
 ```js
-kb.keymap(["a", "d", "w", "s"], [left, right, up, down])
+kb.keymap(["a", "d", "w", "s"], "keydown" [left, right, up, down])
 
 var left = () => console.log("left")
 var right = () => console.log("right")
