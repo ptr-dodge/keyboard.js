@@ -1,107 +1,71 @@
 # Keyboard.js
+<em style="color:lightblue">Simulate and detect key events with the Keyboard class.</em>
 
->### <em style="color:lightblue">Simulate and detect keypresses with my library</em>
-
----
-
-Create a new _Keyboard_ instance:
-
+## Usage
 ```js
-var kb = new Keyboard(element)
+import Keyboard from './Keyboard.js'
 ```
 
-For detecting <em style="color:lightblue">keydown</em> and <em style="color:lightblue">keyup</em> events, <em style="color:lightblue">element</em> is the element you want to detect an event on, this defaults to `document`. This can be changed via `Keyboard.element`
-
-### Example:
-
+Start by creating a new instance of the Keyboard class:
 ```js
 var kb = new Keyboard(document.querySelector("#element"))
-kb.keydown("a", () => console.log("a"))
+```
+Create a new Keyboard instance, providing an optional element — the DOM element you want to detect an event on. If not provided, it defaults to `document`, it is also accessible through `keyboard.element`.
+
+## Keydown and Keyup
+To detect keydown and keyup events, use the keydown and keyup methods respectively:
+```js
+kb.keydown("a", (event) => console.log("a key is pressed"));
+kb.keyup("a", (event) => console.log("a key is released"));
 ```
 
-The <em style="color:lightblue">keydown</em> and <em style="color:lightblue">keyup</em> methods take in a key to listen for and a callback to execute once the key is pressed.
-
-## <a id="keydown">_Keydown()_</a>
-
-The first argument for <em style="color:lightblue">keydown</em> is nullable and takes in a string or an array of strings:
-
-For the callback, if you want to provide a callback as an inline function, you need to use an anonymous function; `function() {}` or `() => {}` to invoke the callback on a key event.
-
-Else you will get an error: `please provide a function as a callback` or the argument will be executed on the browser parsing it. The same goes for `keyup`, `press`, and `release`
-
-## <a id="keyup">_keyup()_</a>
-
-The same rules _(modifiers)_ apply to this method as well. Only difference is that it detects _keyup_ events. both methods are nullable
-
-### Bad example
-
+## Create keypresses
+To simulate a keypress event, use the press method:
 ```js
-kb.keydown("a", console.log("a"))❌
-// the console.log statement is not wrapped in a function
-// doesn't work
+kb.press("a", {}, () => console.log("simulated a keypress event of a"));
 ```
 
-### Good example
-
+## Key releases
+To simulate a key release event, use the release method:
 ```js
-kb.keydown("a", () => console.log("a"))✔️
-// the console.log statement is not wrapped in a function
-// works
+kb.release("a", {}, () => console.log("simulated a key release event of a"));
 ```
 
-> This works too, more conventional method.
+## Keymap
+To map a set of keys to their respective callbacks upon an event (type), use the keymap method:
 
 ```js
-kb.keydown("a", callback)✔️
-// remember not to use () for specifying a callback
+var keyArr = ["a", "d", "w", "s"];
+var callbackArr = [
+  () => console.log("left"),
+  () => console.log("right"),
+  () => console.log("up"),
+  () => console.log("down")
+];
 
-function callback() {
-    console.log("a")
-}
+kb.keymap(keyArr, "keydown", callbackArr);
 ```
 
----
+## Functions
+Most functions take a key, modifiers and callback argument. key is the key you want to listen for or simulate, modifiers is an object which can contain ctrl, alt and shift properties and callback is the function you want to execute on this key event.
 
-## <a id="press">_press()_</a>
-
-This method takes in a target element; this could be a `<textarea>` or just a `<div>`, etc.
-
-The second argument is for modifiers; `ctrl`, `alt`, `shift`
-these must be specified like so in an array:
-
+## Examples
 ```js
-kb.press("a", ["ctrl", "..."])
+var kb = new Keyboard();
+kb.keydown(["a", "b"], () => console.log("a or b is pressed"));
+
+kb.keyup("c", { ctrl: true }, () => console.log("ctrl+c is released"));
+
+kb.press("d", {ctrl: true, shift: true}, () => console.log("Simulated ctrl+shift+d press event"));
+
+kb.release("e", {alt: true}, () => console.log("Simulated alt+e release event"));
 ```
 
-If no modifiers are specified, the second argument defaults to the callback with this nifty bit:
-
 ```js
-if (typeof arguments[1] == "array") {
-  modifiers = arguments[1]
-}
-if (typeof arguments[1] == "function") {
-  callback = arguments[1]
-}
-if (typeof arguments[2] == "array") {
-  modifiers = arguments[2]
-}
-if (typeof arguments[2] == "function") {
-  callback = arguments[2]
-}
-```
-
-## <a id="release">_release()_</a>
-Same as <a id="press">_press()_</a>
-
----
-## <a id="keymap">_keymap()_</a>
-Maps an array of keys to an array of callbacks:
-
-```js
-kb.keymap(["a", "d", "w", "s"], "keydown", [left, right, up, down])
-
-var left = () => console.log("left")
-var right = () => console.log("right")
-var up = () => console.log("up")
-var down = () => console.log("down")
+var keys = ["f", "g"];
+var callbacks = [
+  () => console.log("f is pressed"),
+  () => console.log("g is pressed")
+];
+kb.keymap(keys, "keydown", callbacks);
 ```

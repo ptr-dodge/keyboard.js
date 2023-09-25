@@ -1,102 +1,75 @@
-class Keyboard {
-    constructor(element) {
-        this.element = element ? element : document
-        this.key = ""
+export default class Keyboard {
+    constructor(element = document) {
+        this.key = "";
+        this.element = element;
     }
 
-    keydown(key, callback) {
-        this.key = key
-        key = key ? key : "" || []
-        callback = callback ? callback : () => console.log(key)
-        this.element.addEventListener('keydown', function (e) {
-            for (let n = 0; n < key.length; n++) {
-                if (e.key == key[n]) {
-                    if (typeof callback == 'function') {
-                        return callback()
-                    } else return console.error("please provide a function as a callback")
-                }
-            }
-        })
-    }
-
-    keyup(key, callback) {
-        this.key = key
-        key = key ? key : "" || []
-        callback = callback ? callback : () => console.log(key)
-        this.element.addEventListener('keyup', function (e) {
-            for (let n = 0; n < key.length; n++) {
-                if (e.key == key[n]) {
-                    if (typeof callback == 'function') {
-                        return callback()
-                    } else return console.error("please provide a function as a callback")
-                }
-            }
-        })
-    }
-
-    press(keyWanted) {
-        var mds = { ctrlKey: false, shiftKey: false, altKey: false },
-            callback = () => console.log(keyWanted),
-            modifiers = []
-
-        if (typeof arguments[1] == 'array') { modifiers = arguments[1] }
-        if (typeof arguments[1] == 'function') { callback = arguments[1] }
-        if (typeof arguments[2] == 'array') { modifiers = arguments[2] }
-        if (typeof arguments[2] == 'function') { callback = arguments[2] }
-
-        for (let n = 0; n < modifiers.length; n++) {
-            modifiers[n] === 'ctrl' ? mds.ctrlKey = true : null
-            modifiers[n] === 'shift' ? mds.shiftKey = true : null
-            modifiers[n] === 'alt' ? mds.altKey = true : null
+    keyEvent(type, keys, callback = () => {}) {
+        if (!Array.isArray(keys)) {
+            keys = [keys];
         }
 
-        var keyEvent = new KeyboardEvent("keydown", { key: keyWanted, repeat: false, target: this.element, char: keyWanted, ctrlKey: mds.ctrlKey, shiftKey: mds.shiftKey, altKey: mds.altKey })
-        this.element.dispatchEvent(keyEvent)
-        this.element.innerText = keyWanted
-        console.log(keyEvent)
-
-        if (typeof callback == 'function') {
-            return callback()
-        } else return console.error("please provide a function as a callback")
-    }
-
-    release(keyWanted, callback) {
-        var mds = { ctrlKey: false, shiftKey: false, altKey: false },
-            callback = () => console.log(keyWanted),
-            modifiers = []
-
-        if (typeof arguments[1] == 'array') { modifiers = arguments[1] }
-        if (typeof arguments[1] == 'function') { callback = arguments[1] }
-        if (typeof arguments[2] == 'array') { modifiers = arguments[2] }
-        if (typeof arguments[2] == 'function') { callback = arguments[2] }
-
-        for (let n = 0; n < modifiers.length; n++) {
-            modifiers[n] === 'ctrl' ? mds.ctrlKey = true : null
-            modifiers[n] === 'shift' ? mds.shiftKey = true : null
-            modifiers[n] === 'alt' ? mds.altKey = true : null
+        if (typeof callback !== 'function') {
+            console.error("Please provide a function as a callback");
+            return;
         }
 
-        var keyEvent = new KeyboardEvent("keyup", { key: keyWanted, repeat: false, target: this.element, char: keyWanted, ctrlKey: mds.ctrlKey, shiftKey: mds.shiftKey, altKey: mds.altKey })
-        this.element.dispatchEvent(keyEvent)
-        this.element.innerText = keyWanted
-        console.log(keyEvent)
-
-        if (typeof callback == 'function') {
-            return callback()
-        } else return console.error("please provide a function as a callback")
+        this.element.addEventListener(type, (e) => {
+            if (keys.includes(e.key)) {
+                callback(e);
+            }
+        });
     }
 
-    keymap(keyArr, type, callbackArr) {
-        type = type ? type : "keydown" || "keyup"
-        keyArr = keyArr ? keyArr : []
-        callbackArr = callbackArr ? callbackArr : [() => console.log(keyArr)]
-        for (let n = 0; n < keyArr.length; n++) {
-            if (type == "keydown") {
-                this.keydown(keyArr[n], callbackArr[n])
-            }
-            if (type == "keyup") {
-                this.keyup(keyArr[n], callbackArr[n])
-            }
+    keydown(keys, callback) {
+        this.keyEvent('keydown', keys, callback);
+    }
+
+    keyup(keys, callback) {
+        this.keyEvent('keyup', keys, callback);
+    }
+
+    trigger(type, key, modifiers = {}, callback = () => {}) {
+        if (typeof callback !== 'function') {
+            console.error("Please provide a function as a callback");
+            return;
         }
+
+        const eventInit = {
+            key: key,
+            ctrlKey: modifiers.ctrl || false,
+            shiftKey: modifiers.shift || false,
+            altKey: modifiers.alt || false,
+            target: this.element,
+            repeat: false
+        };
+
+        const event = new KeyboardEvent(type, eventInit);
+        this.element.dispatchEvent(event);
+        callback();
+    }
+
+    press(key, modifiers, callback) {
+        this.trigger('keydown', key, modifiers, callback);
+    }
+
+    release(key, modifiers, callback) {
+        this.trigger('keyup', key, modifiers, callback);
+    }
+
+    keymap(keys, type, callbacks) {
+        if (!Array.isArray(keys)) {
+            keys = [keys];
+        }
+
+        if (!Array.isArray(callbacks)) {
+            callbacks = [callbacks];
+        }
+
+        keys.forEach((key, index) => {
+            let callback = callbacks[index] || (() => {});
+            if (type == "keydown") this.keydown(key, callback);
+            if (type == "keyup") this.keyup(key, callback);
+        });
     }
 }
